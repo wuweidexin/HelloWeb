@@ -1,0 +1,45 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'springboot',
+                   'Implementation-Version': version
+    }
+}
+project.ext {
+	commonColVer="3.2"
+	springbootVer="1.4.1.RELEASE"
+	springComVer="4.3.3.RELEASE"
+}
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile (
+    	"commons-collections:commons-collections:$commonColVer",
+    	"org.springframework.boot:spring-boot-starter-thymeleaf:$springbootVer",
+    	"org.springframework.boot:spring-boot-devtools:$springbootVer",
+    	"org.springframework.boot:spring-boot-starter-test:$springbootVer",
+    	"mysql:mysql-connector-java:6.0.4",
+    	"org.springframework:spring-jdbc:$springComVer",
+    )
+    testCompile(
+    	"org.springframework.boot:spring-boot-starter-test:$springbootVer",
+    	"junit:junit:4.+"
+    )
+}
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
