@@ -8,7 +8,7 @@ import javax.persistence.Id;
 
 /**
  * 这个配置是，表示可嵌入式配置，可以用来作为复合主键的主键类等
- * @author kingdee
+ * @author chen
  *
  */
 @Embeddable
