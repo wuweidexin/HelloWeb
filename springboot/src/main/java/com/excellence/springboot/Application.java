@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/*@SpringBootApplication
+@SpringBootApplication
 public class Application {
 
     public static void main(String[] args) {
@@ -22,8 +22,8 @@ public class Application {
     }
 
 }
-*/
-@SpringBootApplication
+
+/*@SpringBootApplication
 public class Application implements CommandLineRunner {
 
     private static final Logger log = LoggerFactory.getLogger(Application.class);
@@ -61,4 +61,4 @@ public class Application implements CommandLineRunner {
                 (rs, rowNum) -> new Customer(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"))
         ).forEach(customer -> log.info(customer.toString()));
     }
-}
+}*/

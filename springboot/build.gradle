@@ -1,45 +1,62 @@
+buildscript {
+	ext {
+		springBootVersion = '1.4.1.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'spring-boot'
 
-sourceCompatibility = 1.8
-version = '1.0'
 jar {
-    manifest {
-        attributes 'Implementation-Title': 'springboot',
-                   'Implementation-Version': version
-    }
+	baseName = 'design'
+	version = '0.0.1-SNAPSHOT'
 }
-project.ext {
-	commonColVer="3.2"
-	springbootVer="1.4.1.RELEASE"
-	springComVer="4.3.3.RELEASE"
-}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
-    mavenCentral()
-}
-dependencies {
-    compile (
-    	"commons-collections:commons-collections:$commonColVer",
-    	"org.springframework.boot:spring-boot-starter-thymeleaf:$springbootVer",
-    	"org.springframework.boot:spring-boot-devtools:$springbootVer",
-    	"org.springframework.boot:spring-boot-starter-test:$springbootVer",
-    	"mysql:mysql-connector-java:6.0.4",
-    	"org.springframework:spring-jdbc:$springComVer",
-    )
-    testCompile(
-    	"org.springframework.boot:spring-boot-starter-test:$springbootVer",
-    	"junit:junit:4.+"
-    )
-}
-test {
-    systemProperties 'property': 'value'
+	mavenCentral()
 }
 
-uploadArchives {
-    repositories {
-       flatDir {
-           dirs 'repos'
-       }
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+	compile('org.springframework.boot:spring-boot-starter-web'){
+        exclude module: 'org.springframework.boot:spring-boot-starter-logging'
     }
+	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("org.springframework.boot:spring-boot-devtools")
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-configuration-processor")
+    compile("org.springframework.boot:spring-boot-starter-websocket")
+    compile("org.springframework.boot:spring-boot-starter-test")
+    
+    compile("org.springframework:spring-messaging")
+    compile("mysql:mysql-connector-java:5.1.29")
+    compile("org.apache.httpcomponents:httpcore:4.4.1")
+    compile("org.apache.httpcomponents:httpclient:4.5")
+    compile("commons-io:commons-io:2.4")
+    compile("net.sf.json-lib:json-lib:2.4:jdk15")
+	testCompile('org.springframework.boot:spring-boot-starter-test') 
+	testCompile('junit:junit') 
+}
+
+
+eclipse {
+	classpath {
+		 containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+		 containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7'
+	}
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.9'
 }

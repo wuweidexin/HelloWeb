@@ -1,5 +1,7 @@
 package com.excellence.springboot.dao.impl;
-
+/**
+ * 使用JdbcTemplate操作的范例
+ */
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;

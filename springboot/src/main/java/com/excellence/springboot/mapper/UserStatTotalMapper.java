@@ -19,10 +19,10 @@ public class UserStatTotalMapper implements RowMapper{
 			UserStatTotal ns = new UserStatTotal();
 			ns.setActiveUser(rs.getInt("activeUser"));
 			ns.setLongName(rs.getString("longName"));
-			ns.setLongNumber(rs.getString("longNumber"));
+			ns.getUserStatTotalFK().setLongNumber(rs.getString("longNumber"));
 			ns.setParentId(rs.getString("parentId"));
 			ns.setTotalUser(rs.getInt("totalUser"));
-			ns.setWbNetworkId(rs.getString("wbnetworkId"));
+			ns.getUserStatTotalFK().setWbNetworkId(rs.getString("wbnetworkId"));
 			return ns;
 		}
 		return null;
