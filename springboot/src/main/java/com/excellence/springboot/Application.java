@@ -1,26 +1,49 @@
 package com.excellence.springboot;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
+import org.springframework.context.annotation.Bean;
 
-import com.excellence.springboot.demo.Customer;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import net.bull.javamelody.MonitoringFilter;
+import net.bull.javamelody.SessionListener;
 
 @SpringBootApplication
 public class Application {
-
+	/**
+	 * 设置javamelody服务监听
+	 * @return
+	 */
+	@Bean(name = "monitoringFilter")
+	public MonitoringFilter monitoringFilter() {
+		return new MonitoringFilter();
+	}
+	@Bean
+	public FilterRegistrationBean cacheFilterRegistration() {
+		FilterRegistrationBean registration = new FilterRegistrationBean();
+		registration.setFilter(monitoringFilter());
+		registration.addUrlPatterns("/*");
+		registration.setName("monitoring");
+		return registration;
+	}
+	@Bean(name = "sessionListener")
+	public SessionListener sessionListener() {
+		return new SessionListener();
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Bean
+    public ServletListenerRegistrationBean servletListenerRegistrationBean(){
+        ServletListenerRegistrationBean servletListenerRegistrationBean = new ServletListenerRegistrationBean();
+        servletListenerRegistrationBean.setListener(new SessionListener());
+        return servletListenerRegistrationBean;
+    }
+	
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
+    
 }
 
 /*@SpringBootApplication
@@ -61,4 +84,28 @@ public class Application implements CommandLineRunner {
                 (rs, rowNum) -> new Customer(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"))
         ).forEach(customer -> log.info(customer.toString()));
     }
-}*/
+}
+
+
+ @Bean
+    public ServletRegistrationBean indexServletRegistration() {
+        ServletRegistrationBean registration = new ServletRegistrationBean(new IndexServlet());
+        registration.addUrlMappings("/hello");
+        return registration;
+    }
+
+    @Bean
+    public FilterRegistrationBean indexFilterRegistration() {
+        FilterRegistrationBean registration = new FilterRegistrationBean(new IndexFilter());
+        registration.addUrlPatterns("/");
+        return registration;
+    }
+    @Bean
+    public ServletListenerRegistrationBean servletListenerRegistrationBean(){
+        ServletListenerRegistrationBean servletListenerRegistrationBean = new ServletListenerRegistrationBean();
+        servletListenerRegistrationBean.setListener(new IndexListener());
+        return servletListenerRegistrationBean;
+    }
+
+
+*/
